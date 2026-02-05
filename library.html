@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIBRARY // NEXUS AUDIO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #ffffff;
+            --bg: #000000;
+            --glow: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="neon-blue"] {
+            --primary: #00f0ff;
+            --glow: rgba(0, 240, 255, 0.8);
+        }
+
+        [data-theme="cyber-purple"] {
+            --primary: #b366ff;
+            --glow: rgba(179, 102, 255, 0.8);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .glow {
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px var(--glow);
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(var(--primary) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--primary) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+        }
+
+        .search-input {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        .search-input::placeholder {
+            color: var(--primary);
+            opacity: 0.4;
+        }
+
+        .track-card {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .track-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        .track-thumbnail {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--primary);
+        }
+
+        .live-indicator {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .scrollable {
+            max-height: calc(100vh - 500px);
+            overflow-y: auto;
+        }
+
+        .scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .scrollable::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scrollable::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            box-shadow: 0 0 5px var(--glow);
+        }
+    </style>
+</head>
+<body class="relative overflow-hidden">
+    <div class="grid-bg fixed inset-0"></div>
+    
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="border-b border-white border-opacity-20 p-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl tracking-widest glow-text">NEXUS AUDIO</h1>
+                <nav class="flex gap-8 text-sm tracking-wider">
+                    <a href="player.html" class="opacity-60 hover:opacity-100">PLAYER</a>
+                    <a href="library.html" class="glow-text">LIBRARY</a>
+                    <a href="system.html" class="opacity-60 hover:opacity-100">SYSTEM</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Library Container -->
+        <main class="flex-1 p-8">
+            <div class="max-w-5xl mx-auto">
+                <!-- Top Section -->
+                <div class="mb-8 flex items-center justify-between">
+                    <h2 class="text-3xl tracking-widest glow-text">LIBRARY</h2>
+                    <input 
+                        type="text" 
+                        placeholder="SEARCH ARCHIVES..." 
+                        class="search-input tracking-wider text-sm w-80"
+                        id="search-input"
+                    >
+                </div>
+
+                <!-- Transmission Active -->
+                <div class="mb-12">
+                    <h3 class="text-sm tracking-widest opacity-60 mb-4">TRANSMISSION ACTIVE</h3>
+                    <div id="now-playing-container">
+                        <div class="border border-white border-opacity-20 p-6 flex items-center gap-6">
+                            <p class="text-sm opacity-40 tracking-wide">NO ACTIVE TRANSMISSION</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Units -->
+                <div>
+                    <h3 class="text-sm tracking-widest opacity-60 mb-4">STORAGE UNITS</h3>
+                    <div class="scrollable space-y-3" id="track-list">
+                        <!-- Tracks will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

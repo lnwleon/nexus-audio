@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAYER // NEXUS AUDIO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #ffffff;
+            --bg: #000000;
+            --glow: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="neon-blue"] {
+            --primary: #00f0ff;
+            --glow: rgba(0, 240, 255, 0.8);
+        }
+
+        [data-theme="cyber-purple"] {
+            --primary: #b366ff;
+            --glow: rgba(179, 102, 255, 0.8);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+        }
+
+        .glow {
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px var(--glow);
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(var(--primary) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--primary) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+        }
+
+        .album-art {
+            width: 280px;
+            height: 280px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 40px var(--glow);
+        }
+
+        .progress-bar {
+            cursor: pointer;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--glow);
+            transition: width 0.1s linear;
+        }
+
+        .control-btn {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        .control-btn svg {
+            fill: var(--primary);
+        }
+
+        #visualizer-canvas {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative overflow-hidden">
+    <div class="grid-bg fixed inset-0"></div>
+    
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="border-b border-white border-opacity-20 p-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl tracking-widest glow-text">NEXUS AUDIO</h1>
+                <nav class="flex gap-8 text-sm tracking-wider">
+                    <a href="player.html" class="glow-text">PLAYER</a>
+                    <a href="library.html" class="opacity-60 hover:opacity-100">LIBRARY</a>
+                    <a href="system.html" class="opacity-60 hover:opacity-100">SYSTEM</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Player Container -->
+        <main class="flex-1 flex flex-col items-center justify-center py-12">
+            <!-- Album Art -->
+            <div class="album-art glow mb-12" id="album-art">
+                <img src="" alt="Album Art" class="w-full h-full object-cover" id="album-img">
+            </div>
+
+            <!-- Track Info -->
+            <div class="text-center mb-8 min-h-[60px]">
+                <h2 class="text-xl tracking-widest glow-text mb-2" id="track-title">NO SIGNAL</h2>
+                <p class="text-sm opacity-60 tracking-wide" id="track-artist">---</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full max-w-md mb-4">
+                <div class="progress-bar glow" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="flex justify-between text-xs mt-2 opacity-60">
+                    <span id="current-time">00:00</span>
+                    <span id="remaining-time">-00:00</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-6 mt-6">
+                <button class="control-btn flex items-center justify-center glow" id="prev-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+
+                <button class="control-btn flex items-center justify-center glow w-16 h-16" id="play-pause-btn">
+                    <svg width="32" height="32" viewBox="0 0 24 24" id="play-icon">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg width="32" height="32" viewBox="0 0 24 24" id="pause-icon" style="display: none;">
+                        <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
+                    </svg>
+                </button>
+
+                <button class="control-btn flex items-center justify-center glow" id="next-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- Visualizer Canvas -->
+        <canvas id="visualizer-canvas"></canvas>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
