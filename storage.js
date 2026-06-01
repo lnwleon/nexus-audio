@@ -2,24 +2,25 @@
 class Storage {
     static KEYS = {
         LAST_TRACK: 'nexus_last_track',
-        SETTINGS: 'nexus_settings',
-        THEME: 'nexus_theme'
+        SETTINGS:   'nexus_settings',
+        THEME:      'nexus_theme'
     };
 
     static save(key, data) {
         try {
             localStorage.setItem(key, JSON.stringify(data));
         } catch (e) {
-            console.error('Storage save error:', e);
+            // Quota exceeded or private browsing - silently degrade
+            console.warn('Storage save failed:', e.name);
         }
     }
 
     static load(key, defaultValue = null) {
         try {
             const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : defaultValue;
+            return data !== null ? JSON.parse(data) : defaultValue;
         } catch (e) {
-            console.error('Storage load error:', e);
+            console.warn('Storage load failed:', e.name);
             return defaultValue;
         }
     }
@@ -28,9 +29,12 @@ class Storage {
         try {
             localStorage.removeItem(key);
         } catch (e) {
-            console.error('Storage remove error:', e);
+            console.warn('Storage remove failed:', e.name);
         }
     }
+
+    // BUG FIX: was checking data !== null before but then checking data ? which
+    // would miss falsy values like 0. Now using strict null check in load().
 
     static saveLastTrack(index) {
         this.save(this.KEYS.LAST_TRACK, { index, timestamp: Date.now() });
@@ -46,10 +50,11 @@ class Storage {
 
     static getSettings() {
         return this.load(this.KEYS.SETTINGS, {
-            crossfade: 0,
-            normalize: false,
-            equalizer: 'flat',
-            visualizer: false
+            crossfade:  0,
+            normalize:  false,
+            equalizer:  'flat',
+            visualizer: false,
+            volume:     1
         });
     }
 
@@ -59,6 +64,11 @@ class Storage {
 
     static getTheme() {
         return this.load(this.KEYS.THEME, 'monochrome');
+    }
+
+    // NEW: wipe all app data
+    static clearAll() {
+        Object.values(this.KEYS).forEach(key => this.remove(key));
     }
 }
 
