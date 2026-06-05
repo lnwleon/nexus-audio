@@ -5,155 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYSTEM // NEXUS AUDIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --primary: #ffffff;
-            --bg: #000000;
-            --glow: rgba(255, 255, 255, 0.8);
-        }
-
-        [data-theme="neon-blue"] {
-            --primary: #00f0ff;
-            --glow: rgba(0, 240, 255, 0.8);
-        }
-
-        [data-theme="cyber-purple"] {
-            --primary: #b366ff;
-            --glow: rgba(179, 102, 255, 0.8);
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--primary);
-            font-family: 'Courier New', monospace;
-        }
-
-        .glow {
-            box-shadow: 0 0 20px var(--glow);
-        }
-
-        .glow-text {
-            text-shadow: 0 0 10px var(--glow);
-        }
-
-        .grid-bg {
-            background-image: linear-gradient(var(--primary) 1px, transparent 1px),
-                              linear-gradient(90deg, var(--primary) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.1;
-        }
-
-        .panel {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 24px;
-        }
-
-        .status-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
-
-        .status-fill {
-            height: 100%;
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--glow);
-        }
-
-        .toggle-switch {
-            width: 50px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid var(--primary);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .toggle-switch.active {
-            background: var(--primary);
-        }
-
-        .toggle-knob {
-            width: 16px;
-            height: 16px;
-            background: var(--bg);
-            border: 1px solid var(--primary);
-            position: absolute;
-            top: 3px;
-            left: 4px;
-            transition: left 0.2s;
-        }
-
-        .toggle-switch.active .toggle-knob {
-            left: 28px;
-        }
-
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 0 8px var(--glow);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            background: var(--primary);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 0 8px var(--glow);
-        }
-
-        .theme-btn {
-            border: 1px solid var(--primary);
-            padding: 8px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .theme-btn.active {
-            background: var(--primary);
-            color: var(--bg);
-            box-shadow: 0 0 15px var(--glow);
-        }
-
-        .eq-preset {
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .eq-preset.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px var(--glow);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="relative overflow-hidden">
     <div class="grid-bg fixed inset-0"></div>
-    
+
     <div class="relative z-10 min-h-screen flex flex-col">
         <!-- Header -->
         <header class="border-b border-white border-opacity-20 p-6">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl tracking-widest glow-text">NEXUS AUDIO</h1>
                 <nav class="flex gap-8 text-sm tracking-wider">
-                    <a href="player.html" class="opacity-60 hover:opacity-100">PLAYER</a>
+                    <a href="player.html"  class="opacity-60 hover:opacity-100">PLAYER</a>
                     <a href="library.html" class="opacity-60 hover:opacity-100">LIBRARY</a>
-                    <a href="system.html" class="glow-text">SYSTEM</a>
+                    <a href="system.html"  class="glow-text">SYSTEM</a>
                 </nav>
             </div>
         </header>
@@ -167,7 +32,6 @@
                     <!-- Technical Status -->
                     <div class="panel">
                         <h3 class="text-sm tracking-widest opacity-60 mb-6">TECHNICAL STATUS</h3>
-                        
                         <div class="space-y-6">
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
@@ -175,24 +39,23 @@
                                     <span class="glow-text">STABLE</span>
                                 </div>
                             </div>
-
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
                                     <span class="opacity-60">POWER CORE</span>
                                     <span id="battery-level">---%</span>
                                 </div>
                                 <div class="status-bar">
-                                    <div class="status-fill" id="battery-bar" style="width: 0%"></div>
+                                    <div class="status-fill" id="battery-bar" style="width:0%"></div>
                                 </div>
                             </div>
-
                             <div>
+                                <!-- BUG FIX: id added to the bar so JS can update it; was missing -->
                                 <div class="flex justify-between text-sm mb-2">
                                     <span class="opacity-60">STORAGE CAPACITY</span>
-                                    <span id="storage-percent">78%</span>
+                                    <span id="storage-percent">—</span>
                                 </div>
                                 <div class="status-bar">
-                                    <div class="status-fill" style="width: 78%"></div>
+                                    <div class="status-fill" id="storage-bar" style="width:0%"></div>
                                 </div>
                             </div>
                         </div>
@@ -201,17 +64,15 @@
                     <!-- Appearance -->
                     <div class="panel">
                         <h3 class="text-sm tracking-widest opacity-60 mb-6">APPEARANCE</h3>
-                        
                         <div class="space-y-6">
                             <div>
                                 <p class="text-sm opacity-60 mb-3">THEME</p>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <button class="theme-btn text-xs tracking-wider active" data-theme="monochrome">MONO</button>
-                                    <button class="theme-btn text-xs tracking-wider" data-theme="neon-blue">NEON</button>
-                                    <button class="theme-btn text-xs tracking-wider" data-theme="cyber-purple">CYBER</button>
+                                    <button class="theme-btn active" data-theme="monochrome">MONO</button>
+                                    <button class="theme-btn" data-theme="neon-blue">NEON</button>
+                                    <button class="theme-btn" data-theme="cyber-purple">CYBER</button>
                                 </div>
                             </div>
-
                             <div>
                                 <div class="flex justify-between items-center">
                                     <p class="text-sm opacity-60">VISUALIZER</p>
@@ -223,10 +84,9 @@
                         </div>
                     </div>
 
-                    <!-- Audio Settings -->
+                    <!-- Audio Configuration -->
                     <div class="panel col-span-2">
                         <h3 class="text-sm tracking-widest opacity-60 mb-6">AUDIO CONFIGURATION</h3>
-                        
                         <div class="grid grid-cols-2 gap-8">
                             <div>
                                 <p class="text-sm opacity-60 mb-3">EQUALIZER PRESET</p>
@@ -237,15 +97,13 @@
                                     <div class="eq-preset text-xs tracking-wider" data-preset="vocal">VOCAL</div>
                                 </div>
                             </div>
-
-                            <div>
-                                <div class="flex justify-between items-center mb-4">
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
                                     <p class="text-sm opacity-60">NORMALIZE VOLUME</p>
                                     <div class="toggle-switch" id="normalize-toggle">
                                         <div class="toggle-knob"></div>
                                     </div>
                                 </div>
-
                                 <div>
                                     <div class="flex justify-between text-sm mb-2">
                                         <span class="opacity-60">CROSSFADE</span>
@@ -256,11 +114,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Data Management (NEW) -->
+                    <div class="panel col-span-2">
+                        <h3 class="text-sm tracking-widest opacity-60 mb-6">DATA MANAGEMENT</h3>
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm opacity-60">WIPE SAVED DATA (theme, settings, last track)</p>
+                            <button id="clear-data-btn" class="theme-btn text-xs tracking-wider">CLEAR ALL</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
     <script type="module" src="app.js"></script>
+    <script type="module">
+        import Storage from './storage.js';
+        document.getElementById('clear-data-btn').addEventListener('click', () => {
+            if (confirm('Clear all saved Nexus Audio data?')) {
+                Storage.clearAll();
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>
